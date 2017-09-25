@@ -136,4 +136,109 @@ echo '
 
 curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
 
-. $HOME/.bashrc
+cat > $HOME/.vimrc << EOF
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+
+" Show indent column
+Plugin 'nathanaelkane/vim-indent-guides'
+
+" Complete bar in explore
+Plugin 'ctrlpvim/ctrlp.vim'
+
+" Pretty bar
+" Plugin 'vim-airline/vim-airline'
+Plugin 'itchyny/lightline.vim'
+
+" Git functions
+Plugin 'tpope/vim-fugitive'
+
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+
+syntax on
+
+set encoding=utf-8
+set expandtab
+set shiftwidth=2
+set softtabstop=2
+set tabstop=2
+
+set smartindent
+set foldmethod=indent
+set hlsearch
+set ignorecase
+set autochdir
+set incsearch
+
+set list
+set listchars=tab:→→,trail:·
+set textwidth=80
+set number
+set colorcolumn=80
+highlight ColorColumn ctermbg=gray
+set cursorline
+set laststatus=2
+
+
+
+nmap <left> :vert res+1<cr>
+nmap <right> :vert res-1<cr>
+nmap <up> :res+1<cr>
+nmap <down> :res-1<cr>
+nmap <c-w>wk :Sexplore<cr>
+nmap <c-w>wh :Vexplore<cr>
+nmap <F2> :IndentGuidesToggle<cr>
+
+let g:netrw_liststyle=3
+let g:netrw_sizestyle="H"
+let g:netrw_list_hide='^\..*'
+
+" Plugin custom indent-guides
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_guide_size = 1
+let g:indent_guides_auto_colors = 0
+
+hi Normal guibg=NONE ctermbg=NONE
+hi IndentGuidesOdd  guibg=red   ctermbg=darkgrey
+hi IndentGuidesEven guibg=green ctermbg=darkgrey
+
+" Plugin CtrlP
+let g:ctrlp_custom_ignore = '\.git$'
+
+" Plugin Lightline
+let g:lightline = {
+  \ 'colorscheme': 'wombat',
+  \ 'active': {
+  \   'left': [ [ 'mode', 'paste' ],
+  \             [ 'path' ],
+  \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+  \   'right': [ ['time'], 
+  \              ['percent'],
+  \              ['lineinfo'] ],
+  \ },
+  \ 'component_function': {
+  \   'gitbranch': 'fugitive#head',
+  \   'path': 'LightlinePath',
+  \ },
+  \ 'component': {
+  \   'time': '%{strftime("%H:%M")}',
+  \ },
+\ }
+
+function! LightlineTime()
+  return strftime("%H:%M")
+endfunction
+function! LightlinePath()
+  return expand("%:p:~:h") != '~' ? expand("%:p:~:h") : '~/'
+endfunction
+EOF
+
+git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
