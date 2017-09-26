@@ -79,14 +79,40 @@ function git_ps1(){
   fi
 }
 
-function check_env(){
-  if [ -f ./.env/bin/activate ]; then
+
+function backdir() {
+  a=0
+  while [[ \$a -eq 0 ]]; do
+    popd &> /dev/null
+    a=\$?
+  done
+  unset a
+}
+
+function searchdir() {
+  if [[ \$(pwd) == / ]]; then
+    backdir
+    unset dir
+  elif [ -f ./.env/bin/activate ]; then
     dir=\$(pwd)
+    backdir
+  else
+    pushd .. 1> /dev/null
+    searchdir
+  fi
+}
+
+function check_env(){
+  if [ -z "\$dir" ]; then
+    searchdir
+  fi
+  if [ -n "\$dir" ]; then
     source \$dir/.env/bin/activate
     export PS1=\$_OLD_VIRTUAL_PS1
     name="venv"
     __venv="\$DEFAULT(\$GREEN\$name\$DEFAULT) \$NONE"
   fi
+ 
   case \$(pwd) in
     \$dir/*)
       ;;
