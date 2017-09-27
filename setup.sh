@@ -4,7 +4,7 @@ EMAIL="marcelohpf@gmail.com"
 
 yes S | sudo pacman -Sy git curl wget curl tree htop vim terminator yaourt
 
-git config --global user.name $NAME
+git config --global user.name "$NAME"
 git config --global user.email $EMAIL
 git config --global core.editor vim
 
@@ -17,7 +17,10 @@ alias gco="git checkout"
 alias gs="git status"
 alias gd="git diff"
 alias ga="git add"
-alias py="python3"
+alias gpl="git pull"
+alias gps="git push"
+alias python="ipython"
+alias py="ipython"
 EOF
 
 cat > $HOME/.vimrc << EOF
@@ -237,7 +240,7 @@ hi IndentGuidesOdd  guibg=red   ctermbg=darkgrey
 hi IndentGuidesEven guibg=green ctermbg=darkgrey
 
 " Plugin CtrlP
-let g:ctrlp_custom_ignore = '\.git$'
+let g:ctrlp_custom_ignore = '\v(node_modules|\.git|__pycache__)$'
 
 " Plugin Lightline
 let g:lightline = {
@@ -268,3 +271,5 @@ endfunction
 EOF
 
 git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
+
+pip3 install ipython --user
