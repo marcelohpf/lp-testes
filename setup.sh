@@ -19,6 +19,7 @@ alias gd="git diff"
 alias ga="git add"
 alias gpl="git pull"
 alias gps="git push"
+alias gm="git merge"
 alias python="ipython"
 alias py="ipython"
 EOF
@@ -142,9 +143,9 @@ function battery(){
     color=\$BLACK
   fi
   if [ \$status != "Charging" ]; then
-    __level="\$color\$BACKWHITE\$level\$NONE"
-  else
     __level="\$color\$level\$NONE"
+  else
+    __level="\$color\\u26a1\$level\$NONE"
   fi
 }
 
@@ -158,10 +159,33 @@ export PS1='[\e[36;5m\w \$(__command_color)\e[0m] \n\\$ '
 EOF
 
 echo '
+# Extractor function
+function extract(){
+  case $1 in
+    *.rar)
+      unrar x -yv $1;;
+    *.zip)
+      unzip $1;;
+    *.tar)
+      tar xvf $1;;
+    *.tar.gz)
+      tar zxvf $1;;
+  esac
+}
+
+# PYTHON manage.py command
+function pm(){
+  $(find ./ -name manage.py) $@
+}
+
 [[ -f $HOME/.pythonrc ]] && export PYTHONSTARTUP="$HOME/.pythonrc"
 [[ -f $HOME/.ps1 ]] && . $HOME/.ps1
 [[ -d $HOME/.local/ ]] && export PATH=$PATH:$HOME/.local/bin/
-[[ -f $HOME/.bash_alias ]] && . $HOME/.bash_alias' >> $HOME/.bashrc
+[[ -f $HOME/.bash_alias ]] && . $HOME/.bash_alias
+
+# Eternal bash history.
+export HISTFILESIZE=
+export HISTSIZE=' >> $HOME/.bashrc
 
 curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
 
