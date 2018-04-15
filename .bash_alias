@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# alias gc="git commit"
+# alias gb="git branch"
+# alias gr="git reset"
+# alias gl="git log"
+# alias gco="git checkout"
+# alias gs="git status"
+# alias gd="git diff"
+# alias ga="git add"
+# alias gpl="git pull"
+# alias gps="git push"
+# alias gm="git merge"
+
+alias py='python3'
+alias ipy="ipython --no-confirm-exit"
+alias pms="pm shell_plus --print-sql"
+alias pmrs="pm runserver 0.0.0.0:8000"
+alias pmm="pm migrate"
+alias pmmk="pm makemigrations"
+
+
+alias rm="rm -v"
+alias mv="mv -v"
+alias chown="chown -v"
+alias chmod="chmod -v"
+alias cp="cp -v"
+
+alias sdocker="sudo systemctl start docker"
