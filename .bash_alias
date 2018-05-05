@@ -1,16 +1,6 @@
 #!/bin/bash
 
-# alias gc="git commit"
-# alias gb="git branch"
-# alias gr="git reset"
-# alias gl="git log"
-# alias gco="git checkout"
-# alias gs="git status"
-# alias gd="git diff"
-# alias ga="git add"
-# alias gpl="git pull"
-# alias gps="git push"
-# alias gm="git merge"
+alias g='git'
 
 alias py='python3'
 alias ipy="ipython --no-confirm-exit"
@@ -27,3 +17,29 @@ alias chmod="chmod -v"
 alias cp="cp -v"
 
 alias sdocker="sudo systemctl start docker"
+alias sd="sudo docker"
+alias sdc="sudo docker-compose"
+
+function load_alias_completion(){
+  local cmd
+  # Match the command of cmd between '
+  cmd=$(alias $1 | sed -e "s/.\+'\(.\+\)'/\1/g")
+
+  # load completion
+  _completion_loader $cmd
+
+  local completion
+
+  completion=$(complete -p $cmd 2> /dev/null | sed -e "s/ $cmd/ $1/g")
+
+  eval $completion
+}
+
+
+for to_complete in sd sdc g
+do
+  load_alias_completion $to_complete
+done
+
+unset cmd completion to_complete
+unset -f load_alias_completion
