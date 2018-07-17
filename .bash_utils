@@ -1,0 +1,69 @@
+#!/bin/bash
+
+BLACK='\e[30m'
+CYAN='\e[36m'
+RED='\e[31m'
+REDFLASH='\e[31;5m'
+GREEN='\e[32m'
+YELLOW='\e[33m'
+WHITE='\e[37m'
+BACKBLACK='\e[40m'
+BACKCYAN='\e[46m'
+BACKRED='\e[41m'
+BACKGREEN='\e[42m'
+BACKYELLOW='\e[43m'
+BACKWHITE='\e[47m'
+NONE='\e[0m'
+DEFAULT=$CYAN
+
+function searchenvdir() {
+  local _dir=$(realpath $1)
+  if [ -f $_dir/.env/bin/activate ]; then
+    dir=$_dir
+  elif [ $_dir != '/' ]; then
+    searchenvdir $_dir/..
+  fi
+}
+
+function se(){
+  if [ -z "$dir" ]; then
+    searchenvdir .
+  fi
+  if [ -n "$dir" ]; then
+    source $dir/.env/bin/activate
+    export PS1=$_OLD_VIRTUAL_PS1
+    local name="pyenv"
+    __venv="$DEFAULT($GREEN$name$DEFAULT) $NONE"
+  fi
+}
+
+function extract(){
+  case $1 in
+    *.rar)
+      unrar x -yv $1;;
+    *.zip)
+      unzip $1;;
+    *.tar)
+      tar xvf $1;;
+    *.tar.gz)
+      tar zxvf $1;;
+    *.gz)
+      gunzip $1;;
+  esac
+}
+
+function _env(){
+  [[ -z ${VIRTUAL_ENV+x} ]] && __venv=""
+  echo -e $__venv
+}
+
+function _git(){
+  local branch=$(git branch 2> /dev/null | awk '/^*/ {printf $2}')
+  if [[ -n "$branch" ]]; then
+    echo -e "$DEFAULT($GREEN$branch$DEFAULT) $NONE"
+  fi
+}
+
+function calc(){
+  python -c "print(eval('$@'))"
+}

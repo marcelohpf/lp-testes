@@ -2,7 +2,7 @@
 NAME="Marcelo Ferreira"
 EMAIL="marcelohpf@gmail.com"
 
-yes S | sudo pacman -Suy git curl wget curl tree htop vim terminator yaourt evince xclip
+yes S | sudo pacman -Suy git curl wget curl tree htop vim evince xclip
 
 git config --global user.name "$NAME"
 git config --global user.email $EMAIL

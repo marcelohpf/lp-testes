@@ -4,17 +4,8 @@ alias g='git'
 
 alias py='python3'
 alias ipy="ipython --no-confirm-exit"
-alias pms="pm shell_plus --print-sql"
-alias pmrs="pm runserver 0.0.0.0:8000"
-alias pmm="pm migrate"
-alias pmmk="pm makemigrations"
-
-
-alias rm="rm -v"
-alias mv="mv -v"
-alias chown="chown -v"
-alias chmod="chmod -v"
-alias cp="cp -v"
+alias jn="jupyter notebook"
+alias ojn="optirun jupyter notebook"
 
 alias sdocker="sudo systemctl start docker"
 alias sd="sudo docker"
