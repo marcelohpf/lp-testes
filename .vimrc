@@ -1,5 +1,6 @@
 set nocompatible              " be iMproved, required
-filetype on                  " required
+filetype off                  " required
+
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -8,48 +9,28 @@ call vundle#begin()
 " Plugin Manager
 Plugin 'VundleVim/Vundle.vim'
 
+" Git functions
+Plugin 'tpope/vim-fugitive'
+
 " Show indent column
 Plugin 'nathanaelkane/vim-indent-guides'
 
 " Complete bar in explore
 Plugin 'ctrlpvim/ctrlp.vim'
 
+" Elixir syntax highlight
+Plugin 'elixir-editors/vim-elixir'
+
+" Color preview
+Plugin 'ap/vim-css-color'
+
 " Pretty bar
 " Plugin 'vim-airline/vim-airline'
 Plugin 'itchyny/lightline.vim'
 Plugin 'maximbaz/lightline-ale'
 
-" Tagbar
-Plugin 'majutsushi/tagbar'
-
-" Git functions
-Plugin 'tpope/vim-fugitive'
-
-" Codestyle lint
-" Plugin 'vim-syntastic/syntastic'
-Plugin 'w0rp/ale'
-
-" Color preview
-Plugin 'ap/vim-css-color'
-
-" Color scheme
-Plugin 'Badacadabra/vim-archery'
-Plugin 'dim13/smyck.vim'
-Plugin 'beigebrucewayne/skull-vim'
-Plugin 'davidklsn/vim-sialoquent'
-Plugin 'agude/vim-eldar'
-Plugin 'acoustichero/goldenrod.vim'
-Plugin 'acgissues/contrastneed-theme'
-Plugin 'justb3a/vim-smarties'
-Plugin 'dim13/xedit.vim'
-Plugin 'strange/strange.vim'
-Plugin 'broduo/broduo-color-scheme'
-Plugin 'zaki/zazen'
-
-" Async grep
-Plugin 'ramele/agrep'
-
 call vundle#end()            " required
+
 filetype plugin indent on    " required
 
 syntax on
@@ -84,7 +65,6 @@ set laststatus=2              " Always show the status line in windows
 " set background=light
 " The background color for column bar
 highlight ColorColumn ctermbg=gray
-colorscheme goldenrod                 " Use goldenrod coloscheme
 
 " Shortcuts keyboards
 " Windows
@@ -123,8 +103,6 @@ nnoremap <C-l> :tabnext<CR>
 " nnoremap <A-j> :cNext<CR>
 "
 " Commands toggle
-" Toggle indent guides bars
-nmap <F2> :IndentGuidesToggle<CR>
 " Toggle left numbers lines
 nmap <F3> :set nu!<CR>
 " Toggle lines wrapp
@@ -133,10 +111,6 @@ nmap <F4> :set wrap!<CR>
 nmap <F5> :set foldenable!<CR>
 " Toggle ignore case
 nmap <F6> :set ignorecase!<CR>
-" Toggle lints
-nmap <F7> :ALEToggle<CR>
-" Toggle tag bar
-nmap <F8> :TagbarToggle<CR>
 
 
 let g:netrw_liststyle=3             " Configure the Explore as tree
@@ -196,14 +170,6 @@ function! LightlinePath()
   return expand("%:p:~:h") != '~' ? expand("%:p:~:h") : '~/'
 endfunction
 
-" function! FindConfig(prefix, what, where)
-"     let cfg = findfile(a:what, escape(a:where, ' ') . ';')
-"     return cfg !=# '' ? ' ' . a:prefix . ' ' . shellescape(cfg) : ''
-" endfunction
-" 
-" autocmd FileType python let g:ale_python_pylint_options =
-"                 \ get(g:, 'ale_python_pylint_options', '') .
-"                 \ FindConfig('--rcfile', '.pylintrc', expand('<afile>:p:h', 1))
 
 
 " Command Shell like :! but output get in another window

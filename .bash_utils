@@ -17,6 +17,7 @@ NONE='\e[0m'
 DEFAULT=$CYAN
 
 function searchenvdir() {
+  # Search for a virtualenv dir from current dir to /
   local _dir=$(realpath $1)
   if [ -f $_dir/.env/bin/activate ]; then
     dir=$_dir
@@ -26,6 +27,7 @@ function searchenvdir() {
 }
 
 function se(){
+  # Activate a virtual env seaching from current dir backward to /
   if [ -z "$dir" ]; then
     searchenvdir .
   fi
@@ -38,6 +40,7 @@ function se(){
 }
 
 function extract(){
+  # Function to extract some common compressed files
   case $1 in
     *.rar)
       unrar x -yv $1;;
@@ -65,5 +68,14 @@ function _git(){
 }
 
 function calc(){
+  # Use python to provide a command line calculator
   python -c "print(eval('$@'))"
+
+  # Use awk to provide a command line calculator
+  # awk "BEGIN{ print $* }"
+}
+
+# PYTHON manage.py command
+function pm(){
+  $(find ./ -name manage.py) $@
 }

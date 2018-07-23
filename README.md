@@ -17,7 +17,7 @@ script of wallpaper. Then set it in profile initialization.
 
 This is the base alias commands.
 
-[Aliases](.bash_alias.sh)
+[Aliases](.bash_alias)
 
 ## Bash utils
 
@@ -32,3 +32,9 @@ In [Utils](.bash_utils) is found some utils functions to bash:
 # I3
 
 The i3 folder contains configuration file to i3 window manager
+
+# Utils packages
+
+## Arch
+
+bash-completion
