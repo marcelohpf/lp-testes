@@ -1,6 +1,25 @@
-# About
+# About all
 
 This is my utils scripts and config files
+
+# Printer
+
+## Arch
+
+Install the [CUPS](https://wiki.archlinux.org/index.php/CUPS#Configuration) to manager sources printers and [Avahi](https://wiki.archlinux.org/index.php/Avahi) to find networks printers.
+
+Start both services.
+
+***Samsung***
+
+Install the driver from site or install the [Samsung undefied
+driver](https://wiki.archlinux.org/index.php/CUPS/Printer-specific_problems#Samsung) from [AUR](https://aur.archlinux.org/packages/samsung-unified-driver/).
+
+Then go in CUPS administration http://localhost:631/ click in add printers. Do
+the loggin as as ***root*** or a user with permission to manage printers. Add
+the printer and use default options.
+
+![Drive printer selection](samsung_printer.png)
 
 # OS configuration
 
@@ -21,20 +40,29 @@ This is the base alias commands.
 
 ## Bash utils
 
-In [Utils](.bash_utils) is found some utils functions to bash:
+The script [bash utils](.bash_utils) has some utils functions to bash:
 
 * se and searchenvdir: search for a virtual env from / to current dir
 * extract: base function to extract data from some compressed files
 * _git: show current branch to print in PS1
 * _env: show .pyenv name to print in PS1
-* calc: calculator using python. To use '()' is necessary quotations ""
+* calc: command line calculator using python or awk. To use '()' is necessary quotations ""
 
 # I3
 
-The i3 folder contains configuration file to i3 window manager
+The [i3 folder](i3) contains configuration file to i3 window manager. To use it, copy the entire folder to `$HOME/.config/`.
 
 # Utils packages
 
-## Arch
+## Pacman
 
-bash-completion
+* bash-completion
+* qbittorrent
+
+## Yaourt
+
+* polybar
+
+## Pip
+
+* [grip](https://github.com/joeyespo/grip)

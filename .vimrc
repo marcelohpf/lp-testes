@@ -123,16 +123,11 @@ let g:indent_guides_enable_on_vim_startup = 1   " Enable indent guides
 let g:indent_guides_guide_size = 1              " Indent guides bar size
 let g:indent_guides_auto_colors = 0             " Don't use random colors
 
-" highlight Normal guibg=NONE ctermbg=NONE
+highlight Normal guibg=NONE ctermbg=NONE
 " Set the Indent Guides Colors as darkgrey to not alternate
 highlight IndentGuidesOdd  guibg=red   ctermbg=darkgrey
 highlight IndentGuidesEven guibg=green ctermbg=darkgrey
 
-" Plugin ALE
-let b:ale_linters = ['pylint']
-
-" Plugin CtrlP
-let g:ctrlp_custom_ignore = '\v(node_modules|\.git|__pycache__)$'
 
 " Plugin Lightline
 let g:lightline = {
