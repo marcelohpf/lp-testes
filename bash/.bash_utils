@@ -67,6 +67,42 @@ function _git(){
   fi
 }
 
+function _battery(){
+  # Load battery info in sys files
+  local level=$(cat /sys/class/power_supply/BAT1/capacity)
+  local status=$(cat /sys/class/power_supply/BAT1/status)
+
+  local color=$DEFAULT
+
+  # PORCENT COLOR
+  if [ $level -lt 30 ]; then
+
+    # LOWER
+    if [ $status != "Charging" ]; then
+      color=$REDFLASH
+    else
+      color=$RED
+    fi
+
+  # MEDIUM
+  elif [ $level -lt 60 ]; then
+    color=$YELLOW
+
+  # FULL
+  elif [ $status = "Charging" ]; then
+    color=$WHITE
+  else
+    color=$GREEN
+  fi
+
+  # CHARGER STATUS WITH ⚡
+  if [ $status != "Charging" ]; then
+    __level="$color$level$NONE"
+  else
+    __level="$color\u26a1$level$NONE"
+  fi
+}
+
 function calc(){
   # Use python to provide a command line calculator
   python -c "print(eval('$@'))"
