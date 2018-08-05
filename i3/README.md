@@ -36,21 +36,21 @@ file, will generate the following bar.
 
 **Polybar used modules**
 
-module/xwindow: native module
-module/i3: native module
-module/xbacklight: native module
-module/cpu: native module
-module/memory: native module
-module/swap: native module
-module/wlan: native module
-module/eth: native module
-module/date: native module
-module/pulseaudio: native module
-module/battery: native module
-module/cpu-temp: native module
-module/powermenu: custom menu script using [i3exit](i3exit.sh)
-module/mplayer: custom player control using [playerctl](player.sh)
-module/gpu: custom system [NVIDIA GPU](gpu.sh) status
+* module/xwindow: native module
+* module/i3: native module
+* module/xbacklight: native module
+* module/cpu: native module
+* module/memory: native module
+* module/swap: native module
+* module/wlan: native module
+* module/eth: native module
+* module/date: native module
+* module/pulseaudio: native module
+* module/battery: native module
+* module/cpu-temp: native module
+* module/powermenu: custom menu script using [i3exit](i3exit.sh)
+* module/mplayer: custom player control using [playerctl](player.sh)
+* module/gpu: custom system [NVIDIA GPU](gpu.sh) status
 
 ![polybar result](polybarresult.png)
 
@@ -63,7 +63,7 @@ feh --bg-fill --randomize ~/.wallpapers/*
 ```
 
 
-To change the background every X times, use the [wallpaper](wallpaper.sh).
+To change the background every X times, use the [wallpaper](wallpaper.sh) script.
 
 ```
 ~/.config/i3/wallpaper.sh X &
@@ -71,9 +71,9 @@ To change the background every X times, use the [wallpaper](wallpaper.sh).
 
 To execute it every time the i3wm starts, add it in .xinitrc
 
-# [Autolock](https://linux.die.net/man/1/xautolock)
+# Autolock
 
-Xautolock is a program that fire others programs after X times. Use it to lock
+[Xautolock](https://linux.die.net/man/1/xautolock) is a program that fire others programs after X times. Use it to lock
 your screen or suspend the notebook. Use i3-nagbar to notify the action. Use the
 [i3exit](i3exit.sh) to manager the actions.
 
