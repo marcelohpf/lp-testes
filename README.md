@@ -38,14 +38,6 @@ The [i3 folder](i3) contains configuration file to i3 window manager. To use it,
 * i3 session script
 * Wallpapera handler
 
-
-## Wallpaper background
-
-Install the [Feh](https://wiki.archlinux.org/index.php/feh) and create the
-script of wallpaper. Then set it in profile initialization.
-
-[Wallpaper](i3/wallpaper.sh)
-
 # Utils packages
 
 ## Pacman
