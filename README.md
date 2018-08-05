@@ -56,13 +56,22 @@ The [i3 folder](i3) contains configuration file to i3 window manager. To use it,
 
 ## Pacman
 
+* [xorg-xprop](https://www.x.org/releases/X11R7.5/doc/man/man1/xprop.1.html):
+  property displayer for X, helps to find information about windows. Used
+  identify WM_NAME for bind window with workspace in i3.
+* [xorg-xbacklight](https://www.x.org/archive/X11R7.5/doc/man/man1/xbacklight.1.html): adjust backlight brightness using RandR extension. Used: change intesity of monitor light.
+* [playerctl](https://github.com/acrisci/playerctl): mpris command-line controller and library for spotify, vlc, audacious, bmp, xmms2, and others. Used: control music in i3blocs and polybar.
 * bash-completion
-* qbittorrent
+* [qbittorrent](https://www.qbittorrent.org/): torrent client. Used: download
+  torrents. :)
+* [feh](https://feh.finalrewind.org/): is an X11 image viewer, simply displays images. Used: view images and set background ramdomly.
 
 ## Yaourt
 
-* polybar
+* [polybar](https://github.com/jaagr/polybar): A fast and easy-to-use tool for creating status bars. Used: pretty bar.
+* [rofi](https://github.com/DaveDavenport/rofi):  A window switcher, application launcher and dmenu replacement. Used: lauch applications in i3.
+
 
 ## Pip
 
-* [grip](https://github.com/joeyespo/grip)
+* [grip](https://github.com/joeyespo/grip): Preview GitHub Markdown files like Readme locally before committing them.

@@ -19,7 +19,7 @@ TITLE="$(playerctl --player $player metadata title)"
 STATUS="$(playerctl status "$player" 2> /dev/null)"
 
 if [ $? -eq 0 ]; then
-  echo "$STATUS: $ARTIST - $TITLE"
+  echo "$STATUS: $TITLE"
 else
   echo
 fi

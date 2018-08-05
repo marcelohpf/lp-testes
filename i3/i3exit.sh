@@ -7,8 +7,15 @@ lock() {
   pulsemixer --mute &> /dev/null
   playerctl -a pause &> /dev/null
 
-  i3lock -i $HOME/.config/i3/lock.png
+  i3lock --nofork -i $HOME/.config/i3/lock.png
 }
+
+unlock() {
+  pulsemixer --unmute &> /dev/null
+  playerctl -a play &> /dev/null
+}
+
+trap unlock EXIT
 
 # Conditions to exit of session
 case "$1" in
@@ -16,7 +23,7 @@ case "$1" in
     lock
     ;;
   suspend)
-    lock && systemctl suspend
+    systemctl suspend && lock
     ;;
   logoff)
     i3-msg exit
@@ -29,7 +36,7 @@ case "$1" in
     ;;
   hibernate)
     # Bad function
-    lock && systemctl hibernate
+    systemctl hibernate && lock
     ;;
 esac
 
