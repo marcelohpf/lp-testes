@@ -4,7 +4,7 @@ Bash alternative is [zsh](http://www.zsh.org/).
 
 # History
 
-The bash program, has a history file, usualy $HOME/.bash_history, and control the
+The bash program, has a history file, usualy `$HOME/.bash_history`, and control the
 size of this file (memory of commands). To don't limit the size of his history
 file, set the variables bellow to [bashrc](.bashrc).
 
@@ -14,7 +14,7 @@ export HISTSIZE=
 ```
 
 To avoid save duplicated commands and repeated commands. Use history control
-with 'ignoreboth' and 'erasedups'. Add in [bashrc](.bashrc)
+with **ignoreboth** and **erasedups**. Add in [bashrc](.bashrc)
 
 ```
 export HISTCONTROL=ignoreboth:erasedups
@@ -24,7 +24,7 @@ export HISTCONTROL=ignoreboth:erasedups
 
 PS1 is the primary prompt which is displayed before each command [ref](https://wiki.archlinux.org/index.php/Bash/Prompt_customization)
 
-It has the dependency of script [bash_utils](.bash_utils).
+It has the dependency of script [bash utils](.bash_utils).
 
 Add in [bashrc](.bashrc) to use.
 
@@ -36,7 +36,7 @@ export PS1="$DEFAULT\w$NONE \$(_env) \$(_git) \n\$ "
 
 Bash alias is a keyboard shortcut, abbreviations to a long command sequence.
 
-The source file is in [Aliases](.bash_alias).
+The source file is in [bash alias](.bash_alias).
 
 * g: git
 * py: python
