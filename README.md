@@ -4,8 +4,6 @@ This is my utils scripts and config files
 
 # Printer
 
-## Arch
-
 Install the [CUPS](https://wiki.archlinux.org/index.php/CUPS#Configuration) to manager sources printers and [Avahi](https://wiki.archlinux.org/index.php/Avahi) to find networks printers.
 
 Start both services.
@@ -16,7 +14,7 @@ Install the driver from site or install the [Samsung undefied
 driver](https://wiki.archlinux.org/index.php/CUPS/Printer-specific_problems#Samsung) from [AUR](https://aur.archlinux.org/packages/samsung-unified-driver/).
 
 Then go in CUPS administration http://localhost:631/ click in add printers. Do
-the loggin as as ***root*** or a user with permission to manage printers. Add
+the login as as ***root*** or a user with permission to manage printers. Add
 the printer and use default options.
 
 # Bluetooth
@@ -47,26 +45,22 @@ because is more simple and has a ondemand load.
 On the first run, execute the command `:PlugInstall` to install all plugins
 enabled on init.vim.
 
-# OS
-
-This section is to link with others instructions for OS customization
-
-## [Bash](bash)
+# [Bash](bash)
 
 * PS1
 * Aliases
 * Utils
 
-## [I3 Window Manager](i3)
+# [I3 Window Manager](i3)
 
 The [i3 folder](i3) contains configuration file to i3 window manager. To use it, copy the entire folder to `$HOME/.config/`.
 
 * Configuration
 * Status bar: Polybar
 * i3 session script
-* Wallpapera handler
+* Wallpaper handler
 
-# Utils packages
+# OS packages
 
 ## Pacman
 
@@ -80,7 +74,7 @@ The [i3 folder](i3) contains configuration file to i3 window manager. To use it,
   torrents. :)
 * [feh](https://feh.finalrewind.org/): is an X11 image viewer, simply displays images. Used: view images and set background ramdomly.
 * [xautolock](https://linux.die.net/man/1/xautolock): scheduler to fire
-  prograns after X times.
+  programs after X times.
 * [numlockx](https://wiki.archlinux.org/index.php/Activating_Numlock_on_Bootup): simple program to activate the numlock key.
 * [bluez](): software to manage bluetooth devices.
 * [bluez-utils](): package with interface in command line to manage bluetooth
