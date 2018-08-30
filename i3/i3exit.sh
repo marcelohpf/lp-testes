@@ -7,6 +7,9 @@ lock() {
   pulsemixer --mute &> /dev/null
   playerctl -a pause &> /dev/null
 
+  #import -window root $HOME/.config/i3/lock.png
+  #convert $HOME/.config/i3/lock.png -filter Gaussian -blur 0x8 $HOME/.config/i3/lock.png
+
   i3lock --nofork -i $HOME/.config/i3/lock.png
 }
 

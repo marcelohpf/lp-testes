@@ -10,13 +10,10 @@ MB_TOTAL=$(echo $STATUS | awk -F ', ' '{printf("%.2f", $3/1024)}')
 TEMPERATURE=$(echo $STATUS | awk -F ', ' '{print $4}')
 UTILIZATION=$(echo $STATUS | awk -F ', ' '{print $5}')
 
-for value in 12,▁ 25,▂ 37,▃ 50,▄ 62,▅ 75,▆ 87,▇ 100,█; do
-  IFS=","
-  read percent char <<< "${value}"
-  if [ $percent -gt $UTILIZATION ] ; then
-    UTILIZATION="$char"
-    break
-  fi
-done
+IFS=","
+while read percent RAMP_UTILIZATION && [ ! $percent -ge $UTILIZATION ]; do
+  # pass
+  RAMP_UTILIZATION=""
+done <<< $(echo -e "2,⠀\n12,▁\n25,▂\n37,▃\n50,▄\n62,▅\n75,▆\n87,▇\n100,█")
 
-echo "$UTILIZATION $TEMPERATURE°C $MB_USAGE GB"
+echo "$RAMP_UTILIZATION $TEMPERATURE°C $MB_USAGE GB"
