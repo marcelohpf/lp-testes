@@ -4,6 +4,7 @@
 # Should you change your keyboard layout some time, delete
 # this file and re-run i3-config-wizard(1).
 #
+# Little reference: https://cgit.freedesktop.org/xorg/proto/x11proto/tree/XF86keysym.h
 
 default_border none
 gaps inner 5
@@ -128,6 +129,8 @@ set $ws10 "10"
 set $music "Spotify"
 set $rambox "Rambox"
 set $steam "Steam"
+set $services "Services"
+set $options "Options"
 
 # switch to workspace
 bindsym $movemod+1 workspace $ws1
@@ -143,6 +146,8 @@ bindsym $movemod+0 workspace $ws10
 bindsym $mod+1 workspace $rambox
 bindsym $mod+2 workspace $music
 bindsym $mod+3 workspace $steam
+bindsym $mod+4 workspace $services
+bindsym $mod+0 workspace $options
 
 # move focused container to workspace
 bindsym $movemod+Shift+1 move container to workspace $ws1
@@ -158,6 +163,7 @@ bindsym $movemod+Shift+0 move container to workspace $ws10
 bindsym $mod+Shift+1 move container to workspace $rambox
 bindsym $mod+Shift+2 move container to workspace $music
 bindsym $mod+Shift+3 move container to workspace $steam
+bindsym $mod+Shift+4 move container to workspace $services
 
 # Assign applications to containers
 for_window [class="Spotify"] move to workspace $music
@@ -169,11 +175,6 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Select your action to exit' -b 'Shutdown' '$HOME/.config/i3/i3exit.sh poweroff' -b 'Reboot' '$HOME/.config/i3/i3exit.sh reboot' -b 'Suspend' '$HOME/.config/i3/i3exit.sh suspend' -b 'Exit i3' '$HOME/.config/i3/i3exit.sh logoff'"
-
-# lock i3
-bindsym $mod+o exec "$HOME/.config/i3/i3exit.sh lock"
 
 # bright control 
 bindsym XF86MonBrightnessUp exec xbacklight -inc 3
@@ -181,6 +182,8 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 3
 
 # media control
 bindsym XF86AudioPlay exec playerctl play-pause spotify
+bindsym XF86AudioPrev exec playerctl previous spotify
+bindsym XF86AudioNext exec playerctl next spotify
 
 # volume control 
 bindsym XF86AudioRaiseVolume exec pulsemixer --unmute --change-volume +2
@@ -192,9 +195,79 @@ bindsym --release Shift+Print exec  "import -window root ~/images/Screen-$(date 
 bindsym --release Print exec  "import ~/images/ScreenPartial-$(date +%Y-%m-%d-%H-%M-%S).png"
 
 # window management
-bindsym $mod+Shift+d exec --no-startup-id xrandr --output DP1 --right-of eDP1
-bindsym $mod+d exec --no-startup-id xrandr --auto
+bindsym $mod+d mode "Display Management"; workspace $options; exec --no-startup-id feh --no-fehbg --bg-fill "$HOME/.config/i3/window_management.png"
+
+mode "Display Management" {
+  bindsym a exec "xrandr --auto"
+  bindsym d exec "xrandr --output eDP1 --off"
+
+  bindsym m exec "xrandr --output DP1 --auto --same-as eDP1"
+  bindsym l exec "xrandr --output DP1 --auto --output eDP1 --left-of DP1"
+  bindsym h exec "xrandr --output DP1 --auto --output eDP1 --right-of DP1"
+  bindsym j exec "xrandr --output DP1 --auto --output eDP1 --above DP1"
+  bindsym k exec "xrandr --output DP1 --auto --output eDP1 --below DP1"
+  bindsym o exec "xrandr --output DP1 --off"
+
+  bindsym Shift+m exec "xrandr --output DP1 --auto --same-as eDP1"
+  bindsym Shift+l exec "xrandr --output HDMI1 --auto --output eDP1 --left-of HDMI1"
+  bindsym Shift+h exec "xrandr --output HDMI1 --auto --output eDP1 --right-of HDMI1"
+  bindsym Shift+j exec "xrandr --output HDMI1 --auto --output eDP1 --above HDMI1"
+  bindsym Shift+k exec "xrandr --output HDMI1 --auto --output eDP1 --below HDMI1"
+  bindsym Shift+o exec "xrandr --output HDMI1 --off"
+
+
+  bindsym r workspace back_and_forth; mode "default"; exec feh --bg-fill --randomize $HOME/.wallpapers/*; restart
+
+  bindsym Escape mode "default"; workspace back_and_forth; exec --no-startup-id feh --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym q mode "default"; workspace back_and_forth; exec --no-startup-id feh --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym $mod+d mode "default"; workspace back_and_forth; exec --no-startup-id feh --bg-fill --randomize $HOME/.wallpapers/*
+}
+
+
+# bindsym $mod+Shift+d exec --no-startup-id xrandr --output DP1 --right-of eDP1
+# bindsym $mod+d exec --no-startup-id xrandr --auto
 bindsym $mod+b exec --no-startup-id feh --bg-fill --randomize ~/.wallpapers/*
+
+# exit i3 (logs you out of your X session)
+
+bindsym $mod+o exec --no-startup-id "$HOME/.config/i3/i3exit.sh lock"
+bindsym XF86Sleep exec --no-startup-id "$HOME/.config/i3/i3exit.sh suspend"
+
+# bindsym XF86PowerOff mode "Power Management"; workspace $options; exec feh --no-startup-id --no-fehbg --bg-fill $HOME/images/power_management.png
+bindsym $mod+Shift+e mode "Power Management"; workspace $options; exec feh --no-startup-id --no-fehbg --bg-fill $HOME/.config/i3/power_management.png
+
+mode "Power Management" {
+  # Power
+  bindsym p exec --no-startup-id "$HOME/.config/i3/i3exit.sh poweroff", mode "default"
+  bindsym r exec --no-startup-id "$HOME/.config/i3/i3exit.sh reboot", mode "default"
+  bindsym s exec --no-startup-id "$HOME/.config/i3/i3exit.sh suspend", mode "default", workspace back_and_forth, exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym l exec --no-startup-id "$HOME/.config/i3/i3exit.sh lock", mode "default", workspace back_and_forth, exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym e exec --no-startup-id "$HOME/.config/i3/i3exit.sh logoff", mode "default", workspace back_and_forth, exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+
+  # Windows
+  bindsym a [class=".*"] kill, mode "default", workspace $ws1, exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym 1 [workspace=$ws1] kill, mode "default", workspace $ws1, exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym 2 [workspace=$ws2] kill, mode "default", workspace $ws2, exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym 3 [workspace=$ws3] kill, mode "default", workspace $ws3, exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym 4 [workspace=$ws4] kill, mode "default", workspace $ws4, exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym 5 [workspace=$ws5] kill, mode "default", workspace $ws5, exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym 6 [workspace=$ws6] kill, mode "default", workspace $ws6, exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym 7 [workspace=$ws7] kill, mode "default", workspace $ws7, exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym 8 [workspace=$ws8] kill, mode "default", workspace $ws8, exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym 9 [workspace=$ws9] kill, mode "default", workspace $ws9, exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym 10 [workspace=$ws10] kill, mode "default", workspace $ws10, exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym x [workspace=$rambox] kill, mode "default", workspace $rambox, exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym t [workspace=$music] kill, mode "default", workspace $music, exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym m [workspace=$steam] kill, mode "default", workspace $steam, exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym d [workspace=$services] kill, mode "default", workspace $services, exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+
+  # If you don't randomize your background image, just use $HOME/.fehbg to 
+  # use your last wallpaper image
+  bindsym Return mode "default"; workspace back_and_forth; exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym Escape mode "default"; workspace back_and_forth; exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym q mode "default"; workspace back_and_forth; exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+  bindsym XF86PowerOff mode "default"; workspace back_and_forth; exec feh --no-startup-id --bg-fill --randomize $HOME/.wallpapers/*
+}
 
 # resize window (you can also use the mouse for that)
 mode "resize" {

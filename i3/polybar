@@ -39,14 +39,14 @@ fixed-center = false
 background = ${colors.background}
 foreground = ${colors.foreground}
 
-line-size = 4
+line-size = 2
 line-color = #f00
 
-border-size = 1
-border-color = #00000000
+border-size = 0
+border-color = #000
 
-padding-left = 1
-padding-right = 1
+padding-left = 0
+padding-right = 0
 
 module-margin-left = 1
 module-margin-right = 1
@@ -220,14 +220,38 @@ format-prefix-foreground = ${colors.foreground-alt}
 format-underline = #f90000
 label = 
 
-ramp-coreload-0 = ▁
-ramp-coreload-1 = ▂
-ramp-coreload-2 = ▃
-ramp-coreload-3 = ▄
-ramp-coreload-4 = ▅
-ramp-coreload-5 = ▆
-ramp-coreload-6 = ▇
-ramp-coreload-7 = █
+ramp-coreload-0 = "⠀"
+;ramp-coreload-1 = ⡀
+ramp-coreload-1 = ⣀
+;ramp-coreload-3 = ⣄
+ramp-coreload-2 = ⣤
+;ramp-coreload-5 = ⣦
+ramp-coreload-3 = ⣶
+;ramp-coreload-7 = ⣷
+ramp-coreload-4 = ⣿
+;ramp-coreload-9 = ⡿
+ramp-coreload-5 = ⠿
+;ramp-coreload-11 = ⠟
+ramp-coreload-6 = ⠛
+;ramp-coreload-13 = ⠋
+ramp-coreload-7 = ⠉
+;ramp-coreload-15 = ⠁
+
+; ⠀ ⠁ ⠂ ⠃ ⠄ ⠅ ⠆ ⠇ ⠈ ⠉ ⠊ ⠋ ⠌ ⠍ ⠎ ⠏ ⠐ ⠑ ⠒ ⠓ ⠔ ⠕ ⠖ ⠗ ⠘ ⠙ ⠚ ⠛ ⠜ ⠝ ⠞ ⠟
+; 
+; ⠠ ⠡ ⠢ ⠣ ⠤ ⠥ ⠦ ⠧ ⠨ ⠩ ⠪ ⠫ ⠬ ⠭ ⠮ ⠯ ⠰ ⠱ ⠲ ⠳ ⠴ ⠵ ⠶ ⠷ ⠸ ⠹ ⠺ ⠻ ⠼ ⠽ ⠾ ⠿
+; 
+; ⡀ ⡁ ⡂ ⡃ ⡄ ⡅ ⡆ ⡇ ⡈ ⡉ ⡊ ⡋ ⡌ ⡍ ⡎ ⡏ ⡐ ⡑ ⡒ ⡓ ⡔ ⡕ ⡖ ⡗ ⡘ ⡙ ⡚ ⡛ ⡜ ⡝ ⡞ ⡟
+; 
+; ⡠ ⡡ ⡢ ⡣ ⡤ ⡥ ⡦ ⡧ ⡨ ⡩ ⡪ ⡫ ⡬ ⡭ ⡮ ⡯ ⡰ ⡱ ⡲ ⡳ ⡴ ⡵ ⡶ ⡷ ⡸ ⡹ ⡺ ⡻ ⡼ ⡽ ⡾ ⡿
+; 
+; ⢀ ⢁ ⢂ ⢃ ⢄ ⢅ ⢆ ⢇ ⢈ ⢉ ⢊ ⢋ ⢌ ⢍ ⢎ ⢏ ⢐ ⢑ ⢒ ⢓ ⢔ ⢕ ⢖ ⢗ ⢘ ⢙ ⢚ ⢛ ⢜ ⢝ ⢞ ⢟
+; 
+; ⢠ ⢡ ⢢ ⢣ ⢤ ⢥ ⢦ ⢧ ⢨ ⢩ ⢪ ⢫ ⢬ ⢭ ⢮ ⢯ ⢰ ⢱ ⢲ ⢳ ⢴ ⢵ ⢶ ⢷ ⢸ ⢹ ⢺ ⢻ ⢼ ⢽ ⢾ ⢿
+; 
+; ⣀ ⣁ ⣂ ⣃ ⣄ ⣅ ⣆ ⣇ ⣈ ⣉ ⣊ ⣋ ⣌ ⣍ ⣎ ⣏ ⣐ ⣑ ⣒ ⣓ ⣔ ⣕ ⣖ ⣗ ⣘ ⣙ ⣚ ⣛ ⣜ ⣝ ⣞ ⣟
+; 
+; ⣠ ⣡ ⣢ ⣣ ⣤ ⣥ ⣦ ⣧ ⣨ ⣩ ⣪ ⣫ ⣬ ⣭ ⣮ ⣯ ⣰ ⣱ ⣲ ⣳ ⣴ ⣵ ⣶ ⣷ ⣸ ⣹ ⣺ ⣻ ⣼ ⣽ ⣾ ⣿
 
 [module/memory]
 type = internal/memory
@@ -368,14 +392,22 @@ label-full = ⚡ %percentage%
 format-charging = <animation-charging> <label-charging>
 format-discharging = <animation-discharging> <label-discharging>
 
-animation-discharging-0 = "█"
-animation-discharging-1 = "▉"
-animation-discharging-2 = "▊"
-animation-discharging-3 = "▋"
-animation-discharging-4 = "▌"
-animation-discharging-5 = "▍"
-animation-discharging-6 = "▎"
-animation-discharging-7 = "▏"
+animation-discharging-0  = "██"
+animation-discharging-1  = "█▉"
+animation-discharging-2  = "█▊"
+animation-discharging-3  = "█▋"
+animation-discharging-4  = "█▌"
+animation-discharging-5  = "█▍"
+animation-discharging-6  = "█▎"
+animation-discharging-7  = "█▏"
+animation-discharging-8  = "█⠀"
+animation-discharging-9  = "▉⠀"
+animation-discharging-10 = "▊⠀"
+animation-discharging-11 = "▋⠀"
+animation-discharging-12 = "▌⠀"
+animation-discharging-13 = "▍⠀"
+animation-discharging-14 = "▎⠀"
+animation-discharging-15 = "▏⠀"
 
 animation-charging-0 = ⚡❯❯❯❯
 animation-charging-1 = ❯⚡❯❯❯

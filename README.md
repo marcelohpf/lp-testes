@@ -19,6 +19,34 @@ Then go in CUPS administration http://localhost:631/ click in add printers. Do
 the loggin as as ***root*** or a user with permission to manage printers. Add
 the printer and use default options.
 
+# Bluetooth
+
+Install packages bluez, bluez-utils and pulseaudio-bluetooth.
+
+Start the service bluetooth.
+
+To list devices use:
+
+```
+bluetoothctl
+[bluetooth]: scan on
+[bluetooth]: pair <mac of device>
+[bluetooth]: power on
+[bluetooth]: connect <mac of device>
+[bluetooth]: quit
+```
+
+# Text editor
+
+I use the [neovim](https://neovim.io/) editor. A replacement more modern to vim.
+The configuration file [init.vim](nvim/init.vim) should be put in `$HOME/.config/nvim/init.vim`. 
+
+The plugin manager used is the [vim-plug](https://github.com/junegunn/vim-plug),
+because is more simple and has a ondemand load.
+
+On the first run, execute the command `:PlugInstall` to install all plugins
+enabled on init.vim.
+
 # OS
 
 This section is to link with others instructions for OS customization
@@ -54,6 +82,12 @@ The [i3 folder](i3) contains configuration file to i3 window manager. To use it,
 * [xautolock](https://linux.die.net/man/1/xautolock): scheduler to fire
   prograns after X times.
 * [numlockx](https://wiki.archlinux.org/index.php/Activating_Numlock_on_Bootup): simple program to activate the numlock key.
+* [bluez](): software to manage bluetooth devices.
+* [bluez-utils](): package with interface in command line to manage bluetooth
+  devices.
+* [pulseaudio-bluetooth](): plug to pulmeaudio to manage sound devices connected
+  by bluetooth.
+
 
 ## Yaourt
 

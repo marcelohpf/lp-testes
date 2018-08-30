@@ -3,33 +3,32 @@ filetype off                  " required
 
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin()
 
 " Plugin Manager
-Plugin 'VundleVim/Vundle.vim'
+" Plugin 'VundleVim/Vundle.vim'
 
 " Git functions
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 
 " Show indent column
-Plugin 'nathanaelkane/vim-indent-guides'
+Plug 'nathanaelkane/vim-indent-guides'
 
 " Complete bar in explore
-Plugin 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 
 " Elixir syntax highlight
-Plugin 'elixir-editors/vim-elixir'
+Plug 'elixir-editors/vim-elixir'
 
 " Color preview
-Plugin 'ap/vim-css-color'
+" Plugin 'ap/vim-css-color'
 
 " Pretty bar
 " Plugin 'vim-airline/vim-airline'
-Plugin 'itchyny/lightline.vim'
-Plugin 'maximbaz/lightline-ale'
+Plug 'itchyny/lightline.vim'
+" Plugin 'maximbaz/lightline-ale'
 
-call vundle#end()            " required
+call plug#end()            " required
 
 filetype plugin indent on    " required
 
@@ -123,8 +122,8 @@ let g:indent_guides_enable_on_vim_startup = 1   " Enable indent guides
 let g:indent_guides_guide_size = 1              " Indent guides bar size
 let g:indent_guides_auto_colors = 0             " Don't use random colors
 
-highlight Normal guibg=NONE ctermbg=NONE
 " Set the Indent Guides Colors as darkgrey to not alternate
+highlight Normal guibg=NONE ctermbg=NONE
 highlight IndentGuidesOdd  guibg=red   ctermbg=darkgrey
 highlight IndentGuidesEven guibg=green ctermbg=darkgrey
 
@@ -133,7 +132,7 @@ highlight IndentGuidesEven guibg=green ctermbg=darkgrey
 let g:lightline = {
   \ 'colorscheme': 'wombat',
   \ 'active': {
-  \   'left': [ ['linter_ok', 'linter_warnings', 'linter_errors', 'mode', 'paste' ],
+  \   'left': [ ['mode', 'paste' ],
   \             ['gitbranch'],
   \             ['lineinfo', 'percent'] ],
   \   'right': [ ['time'],
@@ -143,9 +142,6 @@ let g:lightline = {
   \ 'component_function': {
   \   'gitbranch': 'fugitive#head',
   \   'path': 'LightlinePath',
-  \   'linter_warnings': 'lightline#ale#warnings',
-  \   'linter_errors': 'lightline#ale#errors',
-  \   'linter_ok': 'lightline#ale#ok',
   \ },
   \ 'component': {
   \   'time': '%{strftime("%H:%M")}',
@@ -172,7 +168,7 @@ command! -complete=shellcmd -nargs=+ Shell call s:RunShellCommand(<q-args>)
 
 " Function that executes the shell command and open another buffer
 function! s:RunShellCommand(cmdline)
-  echo a:cmdline
+  " echo a:cmdline
   let expanded_cmdline = a:cmdline
   for part in split(a:cmdline, ' ')
      if part[0] =~ '\v[%#<]'
@@ -182,9 +178,8 @@ function! s:RunShellCommand(cmdline)
   endfor
   botright new
   setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile nowrap
-  call setline(1, 'You entered:    ' . a:cmdline)
-  call setline(2, 'Expanded Form:  ' .expanded_cmdline)
-  call setline(3,substitute(getline(2),'.','=','g'))
+  call setline(1, 'Command:  ' .expanded_cmdline)
+  call setline(2,substitute(getline(1),'.','=','g'))
   execute '$read !'. expanded_cmdline
   setlocal nomodifiable
   1
