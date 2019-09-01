@@ -1,0 +1,160 @@
+- hosts: localhost
+  vars:
+    homebrew_installed_packages:
+      - pyenv
+      - awscli
+      - neovim
+      - kubernetes-cli
+      - tmux
+      - htop
+      - nmap
+      - golang
+      - git
+      - zsh
+      - fzf
+      - reattach-to-user-namespace
+    homebrew_cask_apps:
+      - telegram
+      - whatsapp
+      - stremio
+      - vlc
+  roles:
+    - geerlingguy.homebrew
+  tags:
+    - base
+
+- hosts: localhost
+  tasks:
+    - name: Tmux config
+      copy:
+        src: ./files/tmux.conf
+        dest: /users/marceloferreira/.tmux.conf
+        owner: marceloferreira
+        group: staff
+        mode: 0644
+  tags:
+    - terminal
+
+- hosts: localhost
+  tasks:
+    - name: Check zsh
+      command: which zsh
+      register: using_zsh
+      changed_when: false
+    - name: Check oh-my-zsh
+      stat:
+        path: /Users/marceloferreira/.oh-my-zsh
+      register: dir_omz
+
+    - name: Set zsh facts
+      set_fact:
+        has_zsh: "{{ using_zsh.rc == 0 }}"
+        zsh_path: "{{ using_zsh.stdout }}"
+        has_omz: "{{ dir_omz.stat.exists }}"
+    - name: Oh My ZSH
+      when: has_zsh and not has_omz
+      block:
+      - name: Has Oh My ZSH install script
+        get_url:
+          url: https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+          dest: /tmp/install.sh
+          mode: 0744
+      - name: Install Oh-My-ZSH
+        command: /tmp/install.sh
+      - name: Clean up script
+        file:
+          path: /tmp/install.sh
+          state: absent
+    - name: Using zsh as default
+      become: true
+      shell: chsh -s {{ zsh_path }} marceloferreira
+    - name: Oh-My-ZSH Plugins
+      git:
+        repo: https://github.com/zsh-users/{{ item }}.git
+        dest: /users/marceloferreira/.oh-my-zsh/plugins/{{ item }}
+      when: has_omz
+      loop:
+        - zsh-autosuggestions
+        - zsh-syntax-highlighting
+    - name: .zshrc contains plugins
+      lineinfile:
+        regexp: '^plugins=(.+)$'
+        line: 'plugins=(git zsh-autosuggestions zsh-syntax-highlighting)'
+        dest: /Users/marceloferreira/.zshrc
+    - name: .zshrc contains sh utils
+      lineinfile:
+        line: 'source ~/.sh_utils'
+        path: /Users/marceloferreira/.zshrc
+    - name: sh utils
+      copy:
+        src: ./files/sh_utils
+        dest: /Users/marceloferreira/.sh_utils
+        owner: marceloferreira
+        group: staff
+        mode: '0744'
+  tags:
+    - shell
+
+- hosts: localhost
+  tasks:
+    - name: change permission of directory in ansible
+      file:
+        path: /Users/marceloferreira/.local/share/nvim/site/autoload/
+        state: directory
+        mode: 0777
+        recurse: yes
+    - name: Download Vim-Plug
+      get_url:
+        url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        dest: /Users/marceloferreira/.local/share/nvim/site/autoload/plug.vim
+  tags:
+    - nvim
+
+- hosts: localhost
+  tasks:
+    - name: Check python 3.7
+      shell: pyenv versions | sed -e 's/*//g' | awk '/3.7/ {print $1}'
+      register: check_installed
+    - name: Set install python version
+      set_fact:
+        install_python_3: "{{ check_installed.stdout }}"
+    - name: pyenv 3.7
+      command: pyenv install 3.7.3
+      when: install_python_3 != '3.7.3'
+
+    - name: Ensure pyenv global version 3.7
+      command: pyenv global 3.7.3
+    - name: Create a symbolic link
+      file:
+        src: /usr/local/bin/python3
+        dest: /usr/local/bin/python
+        owner: marceloferreira
+        group: staff
+        state: link
+    - pip:
+        name: boto3
+        executable: pip3
+    - pip:
+        name: pandas
+        executable: pip3
+    - pip:
+        name: flake8
+        executable: pip3
+    - pip:
+        name: ipython
+        executable: pip3
+    - name: Create a symbolic to ipy link
+      file:
+        src: /usr/local/bin/ipython
+        dest: /usr/local/bin/py
+        owner: marceloferreira
+        group: staff
+        state: link
+  tags:
+    - python
+
+- hosts: localhost
+  roles:
+    - markosamuli.nvm
+  tags:
+    - npm

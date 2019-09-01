@@ -1,0 +1,29 @@
+#!/bin/sh
+
+set -e
+
+function ks(){
+  ctx=$(kubectl config get-contexts | sed -e 's/*//g' | awk '/^ /  {i+=1; print i" "$1}' | fzf | awk '{print $2}')
+  kubectl config use-context $ctx
+}
+
+# mainloop tmux
+function tm() {
+  local sessions
+  local session
+  while true
+  do
+    sessions=$(tmux list-sessions -F "#S" 2> /dev/null)
+    if [ $? -eq 0 ]
+    then
+      session=$(echo $sessions | fzf)
+      echo attaching to session $session
+      sleep 2.5
+      tmux a -t $session
+    else
+      echo "Creating a new session"
+      sleep 1
+      tmux
+    fi
+  done
+}
