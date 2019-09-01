@@ -1,7 +1,3 @@
-#!/bin/sh
-
-set -e
-
 function ks(){
   ctx=$(kubectl config get-contexts | sed -e 's/*//g' | awk '/^ /  {i+=1; print i" "$1}' | fzf | awk '{print $2}')
   kubectl config use-context $ctx
