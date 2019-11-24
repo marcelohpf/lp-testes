@@ -1,37 +1,3 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
-
-
-" set the runtime path to include Vundle and initialize
-call plug#begin()
-
-" Plugin Manager
-" Plugin 'VundleVim/Vundle.vim'
-
-" Git functions
-Plug 'tpope/vim-fugitive'
-
-" Show indent column
-Plug 'nathanaelkane/vim-indent-guides'
-
-" Complete bar in explore
-Plug 'ctrlpvim/ctrlp.vim'
-
-" Elixir syntax highlight
-Plug 'elixir-editors/vim-elixir'
-
-" Color preview
-" Plugin 'ap/vim-css-color'
-
-" Pretty bar
-" Plugin 'vim-airline/vim-airline'
-Plug 'itchyny/lightline.vim'
-" Plugin 'maximbaz/lightline-ale'
-
-call plug#end()            " required
-
-filetype plugin indent on    " required
-
 syntax on
 
 set encoding=utf-8      " Use default encoding UTF-8 for all files
@@ -47,90 +13,97 @@ set foldlevelstart=2    " Begin with 2 levels of nested folds
 set nofoldenable        " Don't fold the content when open a file
 set hlsearch            " Highlight the matchs of a search
 set ignorecase          " Ignore case when search
-set autochdir           " Automatic switch to directory of current buffer file
+" set autochdir           " Automatic switch to directory of current buffer file
 set incsearch           " Move screen to matched search
 set showmatch           " Show the match bracket {} () []
 
 set list                      " Show control chars
-set listchars=tab:→→,trail:·  " Change tab and trails chars
-set textwidth=80              " Define max column to text (automatic breakline)
+set listchars=tab:\ \>,trail:·  " Change tab and trails chars
+"set textwidth=80              " Define max column to text (automatic breakline)
 set number                    " Show the numbers of lines
 set colorcolumn=80            " Show a red bar in colum 80
 set cursorline                " Add a bar in current line of cursor
+set cursorcolumn              " Set cursor column
+
+set mouse=n                   " Mouse integration in (n normal, i insert, v visual)
 
 set wildmenu                  " Activate the interactive autocomplete in statusline
 set wildmode=longest:full     " Complete with best match and show options in statusline
 set laststatus=2              " Always show the status line in windows
-" set background=light
+"set background=light
+
+colorscheme peachpuff
 " The background color for column bar
-highlight ColorColumn ctermbg=gray
+highlight ColorColumn ctermbg=none ctermfg=4 cterm=none
+highlight CursorColumn ctermbg=none ctermfg=none cterm=bold
+highlight CursorLine ctermbg=none ctermfg=none cterm=bold
 
-" Shortcuts keyboards
-" Windows
-" Increase vertical window size
-noremap <silent> <S-left> :vert res+1<cr>
-" Decrease vertical window size
-noremap <silent> <S-right> :vert res-1<cr>
-" Increase horizontal window size
-noremap <silent> <S-up> :res+1<cr>
-" Decrease horizontal window size
-noremap <silent> <S-down> :res-1<cr>
-" Open a Netwr tree on top
-nmap <silent> <c-w>wk :Hexplore!<cr>
-" Open a Netwr tree on bottom
-nmap <silent> <c-w>wj :Hexplore<cr>
-" Open a Netrw tree on left
-nmap <silent> <c-w>wh :Vexplore<cr>
-" Open a Netrw tree on right
-nmap <silent> <c-w>wl :Vexplore!<cr>
-" Open a Netrw tree on current window
-nmap <silent> <c-w>e :Explore<cr>
-" Go and back from Netrw tree
-nmap <silent> <c-w>r :Rexplore<cr>
-
-" Tabs
-" Move tab to left
-nnoremap <C-k> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
-" Move tab to rigth
-nnoremap <C-j> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
-" Change to previous tab
-nnoremap <C-h> :tabprevious<CR>
-" Change to next tab
-nnoremap <C-l> :tabnext<CR>
-
-" nnoremap <A-k> :cprevious<CR>
-" nnoremap <A-j> :cNext<CR>
-"
-" Commands toggle
-" Toggle left numbers lines
-nmap <F3> :set nu!<CR>
-" Toggle lines wrapp
-nmap <F4> :set wrap!<CR>
-" Toggle folds
-nmap <F5> :set foldenable!<CR>
-" Toggle ignore case
-nmap <F6> :set ignorecase!<CR>
-
-
-let g:netrw_liststyle=3             " Configure the Explore as tree
+" let g:netrw_liststyle=3             " Configure the Explore as tree
 let g:netrw_sizestyle="H"           " Humanable size of files
 let g:netrw_list_hide='^\..\+'      " Hide the hidden files
-let g:netrw_hide=1                  " Show only non hidden files
 
-" Plugin custom indent-guides
-let g:indent_guides_enable_on_vim_startup = 1   " Enable indent guides
-let g:indent_guides_guide_size = 1              " Indent guides bar size
-let g:indent_guides_auto_colors = 0             " Don't use random colors
+" ignore some folders using vimgrep
+set wildignore+=*/vendor/**
 
-" Set the Indent Guides Colors as darkgrey to not alternate
-highlight Normal guibg=NONE ctermbg=NONE
-highlight IndentGuidesOdd  guibg=red   ctermbg=darkgrey
-highlight IndentGuidesEven guibg=green ctermbg=darkgrey
+" Specify a directory for plugins
+" - For Neovim: ~/.local/share/nvim/plugged
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/..local/share/nvim/plugged')
 
+" Language Server Client
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" Syntastic the syntax integration for everything
+Plug 'vim-syntastic/syntastic'
+
+" Golang
+"Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
+
+" Plug statusbar
+Plug 'itchyny/lightline.vim'
+
+" Awsome git plugin
+Plug 'tpope/vim-fugitive'
+
+" Fuzzy search
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
+
+" Vim tabular
+Plug 'godlygeek/tabular'
+
+" Vim terraform highlights and utils
+Plug 'hashivim/vim-terraform'
+
+" MD preview
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+
+" Mustache helm
+Plug 'mustache/vim-mustache-handlebars'
+
+" Visual multi
+Plug 'mg979/vim-visual-multi'
+
+" Initialize plugin system
+call plug#end()
+
+nmap <c-w>wh :Vexplore<CR>
+nmap <c-w>wl :Vexplore!<CR>
+nmap <c-w>wk :Hexplore!<CR>
+nmap <c-w>wj :Hexplore<CR>
+nmap <c-w>e :Explore<CR>
+nmap <c-w>r :Rexplore<CR>
+nmap <c-w>0 :vertical res <bar> res<CR>
+nmap <F6> :exec 'read !'.getline('.')<CR>
+
+nmap <space> :nohlsearch<CR>
+nmap <c-j> :bprevious<CR>
+nmap <c-k> :bnext<CR>
+nmap <c-l> :Buffers<CR>
 
 " Plugin Lightline
 let g:lightline = {
-  \ 'colorscheme': 'wombat',
   \ 'active': {
   \   'left': [ ['mode', 'paste' ],
   \             ['gitbranch'],
@@ -161,26 +134,22 @@ function! LightlinePath()
   return expand("%:p:~:h") != '~' ? expand("%:p:~:h") : '~/'
 endfunction
 
+" CoC
+nnoremap <silent> U :call <SID>show_documentation()<CR>
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
+" Fuzzy
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-o': 'split',
+  \ 'ctrl-v': 'vsplit' }
 
-" Command Shell like :! but output get in another window
-command! -complete=shellcmd -nargs=+ Shell call s:RunShellCommand(<q-args>)
+noremap <silent><C-p> :Files<CR>
+noremap <silent><C-u> :Rg<CR>
 
-" Function that executes the shell command and open another buffer
-function! s:RunShellCommand(cmdline)
-  " echo a:cmdline
-  let expanded_cmdline = a:cmdline
-  for part in split(a:cmdline, ' ')
-     if part[0] =~ '\v[%#<]'
-        let expanded_part = fnameescape(expand(part))
-        let expanded_cmdline = substitute(expanded_cmdline, part, expanded_part, '')
-     endif
-  endfor
-  botright new
-  setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile nowrap
-  call setline(1, 'Command:  ' .expanded_cmdline)
-  call setline(2,substitute(getline(1),'.','=','g'))
-  execute '$read !'. expanded_cmdline
-  setlocal nomodifiable
-  1
-endfunction
+" Syntastic
+let g:syntastic_go_checkers = ['go', 'gofmt', 'golint']
+let g:syntastic_python_checkers = ['flake8']

@@ -13,11 +13,13 @@
       - zsh
       - fzf
       - reattach-to-user-namespace
+      - tfenv
     homebrew_cask_apps:
       - telegram
       - whatsapp
       - stremio
       - vlc
+      - slack
   roles:
     - geerlingguy.homebrew
   tags:
@@ -119,11 +121,11 @@
       set_fact:
         install_python_3: "{{ check_installed.stdout }}"
     - name: pyenv 3.7
-      command: pyenv install 3.7.3
-      when: install_python_3 != '3.7.3'
+      command: pyenv install 3.7.4
+      when: install_python_3 != '3.7.4'
 
     - name: Ensure pyenv global version 3.7
-      command: pyenv global 3.7.3
+      command: pyenv global 3.7.4
     - name: Create a symbolic link
       file:
         src: /usr/local/bin/python3

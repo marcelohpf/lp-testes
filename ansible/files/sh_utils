@@ -1,25 +1,104 @@
-function ks(){
-  ctx=$(kubectl config get-contexts | sed -e 's/*//g' | awk '/^ /  {i+=1; print i" "$1}' | fzf | awk '{print $2}')
-  kubectl config use-context $ctx
+# Terraform alias
+alias tf='terraform'
+
+# Kubernetes alais
+alias k='kubectl'
+
+alias kcc='k config current-context'
+alias kcg='k config get-contexts'
+
+# Deis
+function dpus() {
+  deis $@ -c dpus
 }
+function dsus() {
+  deis $@ -c dsus
+}
+function dpd() {
+  deis $@ -c dpd
+}
+
+function kcu(){
+  local CONTEXT=$(kubectl config get-contexts | sed -e 's/*//g' | awk '/^ /  {i+=1; print i" "$1}' | fzf | awk '{print $2}')
+  kubectl config use-context $CONTEXT
+}
+
+function km() {
+  local MATCH=$1
+  set -- "${@:2}"
+  echo "kubectl --context='.*$MATCH.*' $@"
+  for CLUSTER in `kubectl config get-clusters | grep "$MATCH"`
+  do
+    echo "\ncluster: $CLUSTER"
+    kubectl --context=$CLUSTER $@ | sed -e '1d'
+  done
+}
+
+apply_addon() {
+  local CLUSTERS_PATH=/Users/marceloferreira/Projects/clusters
+  local ADDON=$2
+
+  for CLUSTER in `ls $CLUSTERS_PATH/cluster/ | grep "$1"`
+  do
+    echo "Planning $ADDON on cluster $CLUSTER"
+    bigbang apply addon --name $CLUSTER --only $ADDON --project-root $CLUSTERS_PATH
+    echo "Apply changes? [y/n]"
+    read apply
+    if [ "$apply" = "y" ] ; then
+      bigbang apply addon --name $CLUSTER --only $ADDON --project-root $CLUSTERS_PATH --yes
+    else
+      echo "Skipping"
+    fi
+  done
+}
+
+show_addon() {
+  find ./ -name $2 | while read l; do echo $(basename $(dirname $(dirname $l ))); grep $3 $l; done
+}
+
 
 # mainloop tmux
 function tm() {
-  local sessions
-  local session
   while true
   do
     sessions=$(tmux list-sessions -F "#S" 2> /dev/null)
     if [ $? -eq 0 ]
     then
+      echo "Searching sessions"
+      sleep 2
       session=$(echo $sessions | fzf)
-      echo attaching to session $session
-      sleep 2.5
+      echo "attaching to session $session"
+      sleep 1
       tmux a -t $session
     else
       echo "Creating a new session"
-      sleep 1
+      sleep 2
       tmux
     fi
   done
+}
+
+function ec2itop() {
+  aws ec2 describe-instances --instance-ids $1 --query "Reservations[*].Instances[*].PrivateDnsName" --region ${2:-us-east-1} --out text
+}
+
+function ec2ptop() {
+  aws ec2 describe-instances --filter "Name=private-dns-name,Values=$1" --region ${2:-us-east-1} --query "Reservations[*].Instances[*].PublicDnsName" --out text
+}
+function ec2ptoi() {
+  aws ec2 describe-instances --filter "Name=private-dns-name,Values=$1" --region ${2:-us-east-1} --query "Reservations[*].Instances[*].InstanceId" --out text
+}
+
+function finishday() {
+  cd ~/Projects/org/
+  echo "let's finish your daywork"
+  local name=$(date +%Y%m%d_review.yaml)
+  echo "record:" $(date "+%Y-%m-%dT%H:%M:%S%z") >> $name
+  echo "feeling: \n" >> $name
+  echo "good:\n  -" >> $name
+  echo "bad:\n  -" >> $name
+  echo "learn:\n  -" >> $name
+  echo "will:\n  -" >> $name
+  nvim $name
+  cd -
 }
