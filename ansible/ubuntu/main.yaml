@@ -1,0 +1,80 @@
+- hosts: vm
+  gather_facts: no
+  become: true
+  tasks:
+  - name: Add docker key
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+  - name: Add docker repository
+    apt_repository:
+      repo: deb [arch=arm64] https://download.docker.com/linux/ubuntu focal stable
+      state: present
+      filename: docker
+  - name: Add kubectl key
+    apt_key:
+      url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+      state: present
+  - name: Add kubectl repository
+    apt_repository:
+      repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+      state: present
+      filename: kubernetes
+  - name: Install apt packages
+    tags:
+      - install-packages
+    apt:
+      update_cache: true
+      pkg:
+        - docker.io
+        - neovim
+        - fish
+        - fzf
+        - kubectl
+        - ripgrep
+        - awscli
+        - python3-pip
+  - name: Install pip packages
+    tags:
+      - install-packages
+    pip:
+      name:
+        - pipenv
+  - name: Pyenv exists
+    stat:
+      path: /home/marceloferreira/.pyenv
+    register: pyenv_dir
+    tags:
+      - install-packages
+  - name: Install pyenv
+    become: false
+    tags:
+      - install-packages
+    when: not pyenv_dir.stat.exists
+    block:
+      - name: Download install script
+        get_url:
+          checksum: sha256:449cf642f48d3baf88c390dc728f5d7684d05fe5ffec47b0a0586fa4dd63c404
+          url: https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer
+          dest: /tmp/pyenv-installer.sh
+          mode: 0755
+      - name: Execute the pyenv-installer.sh
+        shell: /tmp/pyenv-installer.sh
+      - name: Remove the pyenv-installer.sh
+        file:
+          path: /tmp/pyenv-installer.sh
+          state: absent
+  - name: Change permission of dir for Vim-Plug
+    tags:
+      - install-packages
+    file:
+      path: /home/marceloferreira/.local/share/nvim/site/autoload
+      state: directory
+      mode: 0777
+      recurse: yes
+  - name: Download Vim-Plug
+    tags:
+      - install-packages
+    get_url:
+      url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+      dest: /home/marceloferreira/.local/share/nvim/site/autoload/plug.vim
