@@ -34,6 +34,12 @@
         - ripgrep
         - awscli
         - python3-pip
+        - i3
+        - xorg
+        - xinit
+        - firefox
+        - lightdm
+        - rxvt-unicode
   - name: Install pip packages
     tags:
       - install-packages
@@ -72,9 +78,43 @@
       state: directory
       mode: 0777
       recurse: yes
+  - name: Vimplug exists
+    stat:
+      path: /home/marceloferreira/.pyenv
+    register: vimplug_dir
+    tags:
+      - install-packages
   - name: Download Vim-Plug
     tags:
       - install-packages
+    when: not vimplug_dir.stat.exists
     get_url:
       url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
       dest: /home/marceloferreira/.local/share/nvim/site/autoload/plug.vim
+  - name: Copy i3 configs
+    copy:
+      src: ./files/{{item}}
+      dest: /home/marceloferreira/.config/i3
+      owner: marceloferreira
+      group: marceloferreira
+      mode: u=rw,g=r,o=r
+    loop:
+      - config
+      - power_management.png
+      - polybar
+    tags:
+      - install-packages
+      - config-i3
+  - name: Copy i3 scripts
+    copy:
+      src: ./files/{{item}}
+      dest: /home/marceloferreira/.config/i3
+      owner: marceloferreira
+      group: marceloferreira
+      mode: u=rwx,g=r,o=r
+    loop:
+      - i3exit.sh
+      - launch_polybar.sh
+    tags:
+      - install-packages
+      - config-i3
