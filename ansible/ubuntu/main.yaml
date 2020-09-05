@@ -20,6 +20,11 @@
       repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
       state: present
       filename: kubernetes
+  - name: Install deb packages
+    tags:
+      - install-packages
+    apt:
+      deb: https://downloads.slack-edge.com/linux_releases/slack-desktop-4.8.0-amd64.deb
   - name: Install apt packages
     tags:
       - install-packages
@@ -40,6 +45,7 @@
         - firefox
         - lightdm
         - rxvt-unicode
+        - rofi
   - name: Install pip packages
     tags:
       - install-packages
@@ -70,6 +76,40 @@
         file:
           path: /tmp/pyenv-installer.sh
           state: absent
+  - name: Nvm exists
+    stat:
+      path: /home/marceloferreira/.nvm
+    register: nvm_dir
+    tags:
+      - install-packages
+  - name: Install nvm
+    become: false
+    tags:
+      - install-packages
+    when: not nvm_dir.stat.exists
+    block:
+      - name: Download install script
+        get_url:
+          checksum: sha256:f068e17dacb88f73302790cc076956c7a0d459ce9b01df842ff3e75744f9e2fe
+          url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh
+          dest: /tmp/nvm-installer.sh
+          mode: 0755
+      - name: Execute the nvm-installer.sh
+        shell: /tmp/nvm-installer.sh
+      - name: Remove the nvm-installer.sh
+        file:
+          path: /tmp/nvm-installer.sh
+          state: absent
+  - name: Install node
+    become: false
+    shell: source /home/marceloferreira/.nvm/nvm.sh && nvm install node
+    args:
+      executable: /bin/bash
+  - name: Ensure default node
+    become: false
+    shell: source /home/marceloferreira/.nvm/nvm.sh && nvm use node
+    args:
+      executable: /bin/bash
   - name: Change permission of dir for Vim-Plug
     tags:
       - install-packages
@@ -80,7 +120,7 @@
       recurse: yes
   - name: Vimplug exists
     stat:
-      path: /home/marceloferreira/.pyenv
+      path: /home/marceloferreira/.local/share/nvim/site/autoload/plug.vim
     register: vimplug_dir
     tags:
       - install-packages
@@ -91,6 +131,19 @@
     get_url:
       url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
       dest: /home/marceloferreira/.local/share/nvim/site/autoload/plug.vim
+  - name: Ensure config dir
+    file:
+      path: /home/marceloferreira/.config/{{item}}
+      state: directory
+      mode: 0777
+      recurse: yes
+    loop:
+      - i3
+      - nvim
+    tags:
+      - install-packages
+      - config-nvim
+      - config-i3
   - name: Copy i3 configs
     copy:
       src: ./files/{{item}}
@@ -108,7 +161,7 @@
   - name: Copy i3 scripts
     copy:
       src: ./files/{{item}}
-      dest: /home/marceloferreira/.config/i3
+      dest: /home/marceloferreira/.config/i3/
       owner: marceloferreira
       group: marceloferreira
       mode: u=rwx,g=r,o=r
@@ -118,3 +171,20 @@
     tags:
       - install-packages
       - config-i3
+  - name: Copy nvim scripts
+    copy:
+      src: ../../../nvim/init.vim
+      dest: /home/marceloferreira/.config/nvim/
+      owner: marceloferreira
+      group: marceloferreira
+      mode: u=rwx,g=r,o=r
+    tags:
+      - install-packages
+      - config-nvim
+  - name: Tmux config
+    copy:
+      src: ./files/tmux.conf
+      dest: /home/marceloferreira/.tmux.conf
+      owner: marceloferreira
+      group: marceloferreira
+      mode: 0644
